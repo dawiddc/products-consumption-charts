@@ -1,9 +1,11 @@
 package com.ciokoko.dao;
 
 import com.ciokoko.model.Product;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
@@ -15,13 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class ProductDaoImpl implements ProductDao {
 
     @Override
     public List<Product> getProducts() {
         List<Product> products = new ArrayList<>();
         Iterable<CSVRecord> records;
-        try (Reader in = new FileReader("C:\\Users\\Dawid\\Desktop\\GI\\backend\\productconsumptioncharts\\src\\main\\resources\\products-consumption.csv")) {
+        try (Reader in = new FileReader(new ClassPathResource("products-consumption.csv").getFile())) {
             records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
             for (CSVRecord record : records) {
                 Map<Integer, Double> valuesPerYear = new HashMap<>();
@@ -42,7 +45,7 @@ public class ProductDaoImpl implements ProductDao {
                 products.add(product);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error reading file!");
         }
         return products;
     }

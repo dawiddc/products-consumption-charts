@@ -3,9 +3,10 @@ package com.ciokoko.dao;
 import com.ciokoko.endpoints.ProductEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 @Configuration
-public class ProductDaoInjector {
+public class ProductInjector {
 
     @Bean
     public ProductDao productDao() {
@@ -13,6 +14,7 @@ public class ProductDaoInjector {
     }
 
     @Bean
+    @Lazy
     public ProductEndpoint productEndpoint(ProductDao productDao) {
         return new ProductEndpoint(productDao);
     }
