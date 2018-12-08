@@ -1,19 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { ChartComponent } from './chart.component';
+import {MainViewComponent} from './main-view.component';
 import {ProductDataService} from './product-data.service';
 import {HttpClientModule} from '@angular/common/http';
+import {ChartComponent} from './chart/chart.component';
 
 @NgModule({
   declarations: [
+    MainViewComponent,
     ChartComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
-  ],
+    HttpClientModule],
   providers: [ProductDataService],
-  bootstrap: [ChartComponent]
+  bootstrap: [MainViewComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

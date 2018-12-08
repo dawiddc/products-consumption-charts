@@ -1,49 +1,29 @@
-import {Component, OnInit} from '@angular/core';
-import {Groups, Product, ProductDataService} from './product-data.service';
+import {Component, Input} from '@angular/core';
 import {Chart} from 'chart.js';
+import {Product, ProductDataService} from '../product-data.service';
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss']
+  styleUrls: []
 })
-export class ChartComponent implements OnInit {
-  title = 'product consumption statistics app';
-  private groups: Groups;
-  private productGroup: Product[];
-  private currentUnit: String = 'kg';
-  private allYears: number[] = [];
+export class ChartComponent {
+  @Input() productGroup: Product[];
+  @Input() currentUnit = 'kg';
+  @Input() years: number[] = [];
   private chart: Chart;
 
   constructor(private chartDataService: ProductDataService) {
   }
 
-  ngOnInit() {
-    this.chartDataService.getProductData().subscribe((groups) => {
-      this.groups = groups;
-      this.productGroup = this.groups['kg']['products'];
-      console.log(this.groups);
-      console.log(this.productGroup);
-      this.prepareYearList();
-      this.prepareChart();
-    });
-  }
-
-  private prepareYearList() {
-    for (const product of this.productGroup) {
-      for (const key of Object.keys(product.valuesPerYear)) {
-        if (!this.allYears.includes(Number(key))) {
-          this.allYears.push(Number(key));
-        }
-      }
-    }
-  }
-
-  private prepareChart() {
+  prepareChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
+    this.productGroup = productGroup;
+    this.years = availableYears;
+    this.currentUnit = currentUnit;
     this.chart = new Chart('canvas', {
       type: 'line',
       data: {
-        labels: this.allYears,
+        labels: this.years,
         datasets: [
           {
             label: this.productGroup[0].name,
