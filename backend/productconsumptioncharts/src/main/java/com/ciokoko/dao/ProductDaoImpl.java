@@ -15,6 +15,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,7 +24,7 @@ public class ProductDaoImpl implements ProductDao {
     private Iterable<CSVRecord> records;
 
     @Override
-    public Map<String, Group> getGroups() {
+    public Map<String, Group> getGroups(String group) {
         Map<String, Group> groups = new HashMap<>();
         try (Reader in = new FileReader(new ClassPathResource("products-consumption.csv").getFile())) {
             records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
@@ -36,7 +37,18 @@ public class ProductDaoImpl implements ProductDao {
         } catch (IOException e) {
             log.error("Error reading file!");
         }
+        groups = filterGroups(groups, group);
         return groups;
+    }
+
+    private Map<String, Group> filterGroups(Map<String, Group> groups, String group) {
+        if (group != null && !group.trim().isEmpty()) {
+            return groups.entrySet()
+                    .stream()
+                    .filter(e -> e.getKey().equals(group))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        } else
+            return groups;
     }
 
     private Product buildProduct(CSVRecord record) {

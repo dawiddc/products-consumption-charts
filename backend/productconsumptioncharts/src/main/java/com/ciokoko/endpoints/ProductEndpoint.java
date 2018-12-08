@@ -5,6 +5,7 @@ import com.ciokoko.model.Group;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -17,7 +18,7 @@ public class ProductEndpoint {
 
     @CrossOrigin
     @GetMapping("/products")
-    public Map<String, Group> getGroups() {
-        return productDao.getGroups();
+    public Map<String, Group> getGroups(@RequestParam(required = false) String group) {
+        return productDao.getGroups(group);
     }
 }
