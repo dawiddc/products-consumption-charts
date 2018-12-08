@@ -3,9 +3,13 @@ import {Injectable} from '@angular/core';
 
 export interface Product {
   name: string;
-  unit: string;
   valuesPerYear: { [year: number]: number };
 }
+
+export interface Groups {
+  groups: { [unit: string]: Product[] };
+}
+
 
 @Injectable()
 export class ProductDataService {
@@ -16,7 +20,7 @@ export class ProductDataService {
   }
 
   getProductData() {
-    return this.httpClient.get<Product[]>(this.productUrl);
+    return this.httpClient.get<Groups>(this.productUrl);
   }
 
 }

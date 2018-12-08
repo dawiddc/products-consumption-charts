@@ -1,5 +1,6 @@
 package com.ciokoko.dao;
 
+import com.ciokoko.model.Group;
 import com.ciokoko.model.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,24 +23,25 @@ public class ProductDaoImpl implements ProductDao {
     private Iterable<CSVRecord> records;
 
     @Override
-    public List<Product> getProducts() {
-        List<Product> products = new ArrayList<>();
+    public Map<String, Group> getGroups() {
+        Map<String, Group> groups = new HashMap<>();
         try (Reader in = new FileReader(new ClassPathResource("products-consumption.csv").getFile())) {
             records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
             for (CSVRecord record : records) {
                 final Product product = buildProduct(record);
-                products.add(product);
+                String unit = record.get("unit");
+                groups.computeIfAbsent(unit, k -> new Group(new ArrayList<>()))
+                        .getProducts().add(product);
             }
         } catch (IOException e) {
             log.error("Error reading file!");
         }
-        return products;
+        return groups;
     }
 
     private Product buildProduct(CSVRecord record) {
         return Product.builder()
                 .name(record.get("product"))
-                .unit(record.get("unit"))
                 .valuesPerYear(buildValuesPerYear(record))
                 .build();
     }

@@ -9,6 +9,5 @@ import java.util.Map;
 @Builder
 public class Product {
     private String name;
-    private String unit;
     private Map<Integer, Double> valuesPerYear;
 }
