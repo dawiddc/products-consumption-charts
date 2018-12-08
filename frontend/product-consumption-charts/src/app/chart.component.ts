@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Product, ProductDataService} from './product-data.service';
 import {Chart} from 'chart.js';
 
@@ -8,15 +8,12 @@ import {Chart} from 'chart.js';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit {
-  title = 'product-consumption-charts';
-  private chartDataService: ProductDataService;
+  title = 'product consumption statistics app';
   private products: Product[];
   private allYears: number[] = [];
   private chart: Chart;
 
-  constructor(private chartDataService: ProductDataService,
-              private elementRef: ElementRef) {
-    this.chartDataService = chartDataService;
+  constructor(private chartDataService: ProductDataService) {
   }
 
   ngOnInit() {
@@ -40,12 +37,12 @@ export class ChartComponent implements OnInit {
         labels: this.allYears,
         datasets: [
           {
-            data: Number(Object.values(this.products[0].valuesPerYear)),
+            data: Object.values(this.products[0].valuesPerYear),
             borderColor: '#3cba9f',
             fill: false
           },
           {
-            data: Number(Object.values(this.products[1].valuesPerYear)),
+            data: Object.values(this.products[1].valuesPerYear),
             borderColor: '#ffcc00',
             fill: false
           },
