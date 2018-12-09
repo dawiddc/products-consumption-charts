@@ -19,7 +19,7 @@ export class ProductDataService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getProductData(groups: string[] = ['szt.', 'kg']) {
+  getProductData(groups: string[] = []) {
     return this.httpClient.post<Groups>(this.productUrl, groups);
   }
 
