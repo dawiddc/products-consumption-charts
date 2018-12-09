@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Chart} from 'chart.js';
-import {Product, ProductDataService} from '../product-data.service';
+import {Product} from '../product-data.service';
 
 @Component({
   selector: 'app-chart',
@@ -12,9 +12,6 @@ export class ChartComponent {
   @Input() currentUnit = 'kg';
   @Input() years: number[] = [];
   private chart: Chart;
-
-  constructor(private chartDataService: ProductDataService) {
-  }
 
   prepareChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
     this.productGroup = productGroup;
