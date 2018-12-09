@@ -9,11 +9,11 @@ import {Groups, Product, ProductDataService} from './product-data.service';
   styleUrls: ['./main-view.component.scss']
 })
 export class MainViewComponent implements OnInit {
-  title = 'product consumption statistics app';
   private groups: Groups;
   private productGroup: Product[];
   private currentUnit = 'kg';
   private availableYears: number[] = [];
+
   @ViewChild(ChartComponent) chart: ChartComponent;
 
   constructor(private chartDataService: ProductDataService) {

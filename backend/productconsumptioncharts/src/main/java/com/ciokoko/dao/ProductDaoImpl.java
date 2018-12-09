@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -24,31 +25,31 @@ public class ProductDaoImpl implements ProductDao {
     private Iterable<CSVRecord> records;
 
     @Override
-    public Map<String, Group> getGroups(String group) {
-        Map<String, Group> groups = new HashMap<>();
+    public Map<String, Group> getGroups(List<String> requestedGroups) {
+        Map<String, Group> allGroups = new HashMap<>();
         try (Reader in = new FileReader(new ClassPathResource("products-consumption.csv").getFile())) {
             records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
             for (CSVRecord record : records) {
                 final Product product = buildProduct(record);
                 String unit = record.get("unit");
-                groups.computeIfAbsent(unit, k -> new Group(new ArrayList<>()))
+                allGroups.computeIfAbsent(unit, k -> new Group(new ArrayList<>()))
                         .getProducts().add(product);
             }
         } catch (IOException e) {
             log.error("Error reading file!");
         }
-        groups = filterGroups(groups, group);
-        return groups;
+        allGroups = filterGroups(allGroups, requestedGroups);
+        return allGroups;
     }
 
-    private Map<String, Group> filterGroups(Map<String, Group> groups, String group) {
-        if (group != null && !group.trim().isEmpty()) {
-            return groups.entrySet()
+    private Map<String, Group> filterGroups(Map<String, Group> allGroups, List<String> requestedGroups) {
+        if (requestedGroups != null && !requestedGroups.isEmpty()) {
+            return allGroups.entrySet()
                     .stream()
-                    .filter(e -> e.getKey().equals(group))
+                    .filter(e -> requestedGroups.contains(e.getKey()))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         } else
-            return groups;
+            return allGroups;
     }
 
     private Product buildProduct(CSVRecord record) {
