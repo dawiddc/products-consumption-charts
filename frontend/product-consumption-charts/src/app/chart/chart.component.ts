@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {Chart} from 'chart.js';
 import {Product} from '../product-data.service';
 
@@ -8,9 +8,9 @@ import {Product} from '../product-data.service';
   styleUrls: []
 })
 export class ChartComponent {
-  @Input() productGroup: Product[];
-  @Input() currentUnit = 'kg';
-  @Input() years: number[] = [];
+  productGroup: Product[];
+  currentUnit = 'kg';
+  years: number[] = [];
   private chart: Chart;
 
   prepareChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
@@ -25,26 +25,41 @@ export class ChartComponent {
           {
             label: this.productGroup[0].name,
             data: Object.values(this.productGroup[0].valuesPerYear),
-            borderColor: '#3cba9f',
-            fill: false
+            backgroundColor: colors.purple.fill,
+            pointBackgroundColor: colors.purple.stroke,
+            borderColor: colors.purple.stroke,
+            pointHighlightStroke: colors.purple.stroke,
+            borderCapStyle: 'butt',
+            fill: true
           },
           {
             label: this.productGroup[1].name,
             data: Object.values(this.productGroup[1].valuesPerYear),
-            borderColor: '#ffcc00',
-            fill: false
+            backgroundColor: colors.darkBlue.fill,
+            pointBackgroundColor: colors.darkBlue.stroke,
+            borderColor: colors.darkBlue.stroke,
+            pointHighlightStroke: colors.darkBlue.stroke,
+            borderCapStyle: 'butt',
+            fill: true
           },
           {
             label: this.productGroup[2].name,
             data: Object.values(this.productGroup[2].valuesPerYear),
-            borderColor: '#fa92ff',
-            fill: false
+            backgroundColor: colors.green.fill,
+            pointBackgroundColor: colors.lightBlue.stroke,
+            borderColor: colors.lightBlue.stroke,
+            pointHighlightStroke: colors.lightBlue.stroke,
+            borderCapStyle: 'butt',
+            fill: true
           },
           {
             label: this.productGroup[3].name,
             data: Object.values(this.productGroup[3].valuesPerYear),
-            borderColor: '#ec8d67',
-            fill: false
+            backgroundColor: colors.green.fill,
+            pointBackgroundColor: colors.green.stroke,
+            borderColor: colors.green.stroke,
+            pointHighlightStroke: colors.green.stroke,
+            fill: true
           },
         ]
       },
@@ -62,15 +77,34 @@ export class ChartComponent {
           }],
           yAxes: [{
             display: true,
+            stacked: true,
             scaleLabel: {
               display: true,
               labelString: this.currentUnit + '/rok'
             }
           }],
-        }
+        }, animation: {
+          duration: 750,
+        },
       }
     });
   }
-
 }
 
+const colors = {
+  green: {
+    fill: '#e0eadf',
+    stroke: '#5eb84d',
+  },
+  lightBlue: {
+    stroke: '#6fccdd',
+  },
+  darkBlue: {
+    fill: '#92bed2',
+    stroke: '#3282bf',
+  },
+  purple: {
+    fill: '#8fa8c8',
+    stroke: '#75539e',
+  },
+};
