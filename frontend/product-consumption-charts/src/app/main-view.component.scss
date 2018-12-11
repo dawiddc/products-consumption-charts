@@ -1,0 +1,31 @@
+.container {
+    width: 100%;
+    display: flex;
+    background-color: #b5e7a0;
+    box-shadow:-10px 0px 25px #404040;
+}
+
+.content{
+    width: 75%;
+    flex-grow: 1
+}
+
+.menu {
+    background: #d5e1df;
+    min-width: 175px;
+    flex-grow: 2;
+    border-radius: 20px;
+    margin: 10px;
+    box-shadow:-10px 0px 25px #404040;
+}
+
+h1 {
+    font-family: "Arial";
+    font-weight: 200;
+    margin-top:0px;
+    color: white
+}
+
+.main-container {
+    background-color: #86af49;
+}
