@@ -13,6 +13,7 @@ export class MainViewComponent implements OnInit {
   private productGroup: Product[];
   private currentUnit = 'kg';
   private availableYears: number[] = [];
+  private units: string[];
 
   @ViewChild(ChartComponent) chart: ChartComponent;
 
@@ -22,6 +23,8 @@ export class MainViewComponent implements OnInit {
   ngOnInit() {
     this.chartDataService.getProductData().subscribe((groups) => {
       this.groups = groups;
+      this.units = Object.keys(this.groups);
+      this.currentUnit = this.units[2];
       this.productGroup = this.groups[this.currentUnit]['products'];
       this.prepareYearList();
       this.chart.prepareChart(this.productGroup, this.availableYears, this.currentUnit);
@@ -38,5 +41,15 @@ export class MainViewComponent implements OnInit {
     }
   }
 
+  private loadChart() {
+      this.productGroup = this.groups[this.currentUnit]['products'];
+      this.prepareYearList();
+      this.chart.prepareChart(this.productGroup, this.availableYears, this.currentUnit);
+  }
+
+  private unitOnChange(unit) {
+    this.currentUnit = unit;
+    this.loadChart();
+  }
 }
 
