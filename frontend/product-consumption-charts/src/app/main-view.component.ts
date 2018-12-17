@@ -11,9 +11,9 @@ import {Groups, Product, ProductDataService} from './product-data.service';
 export class MainViewComponent implements OnInit {
   private groups: Groups;
   private productGroup: Product[];
-  private currentUnit = 'kg';
   private availableYears: number[] = [];
-  private units: string[];
+  currentUnit = 'kg';
+  units: string[];
 
   @ViewChild(ChartComponent) chart: ChartComponent;
 
@@ -24,10 +24,7 @@ export class MainViewComponent implements OnInit {
     this.chartDataService.getProductData().subscribe((groups) => {
       this.groups = groups;
       this.units = Object.keys(this.groups);
-      this.currentUnit = this.units[2];
-      this.productGroup = this.groups[this.currentUnit]['products'];
-      this.prepareYearList();
-      this.chart.prepareChart(this.productGroup, this.availableYears, this.currentUnit);
+      this.loadChart();
     });
   }
 
@@ -42,9 +39,9 @@ export class MainViewComponent implements OnInit {
   }
 
   private loadChart() {
-      this.productGroup = this.groups[this.currentUnit]['products'];
-      this.prepareYearList();
-      this.chart.prepareChart(this.productGroup, this.availableYears, this.currentUnit);
+    this.productGroup = this.groups[this.currentUnit]['products'];
+    this.prepareYearList();
+    this.chart.prepareChart(this.productGroup, this.availableYears, this.currentUnit);
   }
 
   private unitOnChange(unit) {

@@ -21,47 +21,7 @@ export class ChartComponent {
       type: 'line',
       data: {
         labels: this.years,
-        datasets: [
-          {
-            label: this.productGroup[0].name,
-            data: Object.values(this.productGroup[0].valuesPerYear),
-            backgroundColor: colors.purple.fill,
-            pointBackgroundColor: colors.purple.stroke,
-            borderColor: colors.purple.stroke,
-            pointHighlightStroke: colors.purple.stroke,
-            borderCapStyle: 'butt',
-            fill: true
-          },
-          {
-            label: this.productGroup[1].name,
-            data: Object.values(this.productGroup[1].valuesPerYear),
-            backgroundColor: colors.darkBlue.fill,
-            pointBackgroundColor: colors.darkBlue.stroke,
-            borderColor: colors.darkBlue.stroke,
-            pointHighlightStroke: colors.darkBlue.stroke,
-            borderCapStyle: 'butt',
-            fill: true
-          },
-          {
-            label: this.productGroup[2].name,
-            data: Object.values(this.productGroup[2].valuesPerYear),
-            backgroundColor: colors.green.fill,
-            pointBackgroundColor: colors.lightBlue.stroke,
-            borderColor: colors.lightBlue.stroke,
-            pointHighlightStroke: colors.lightBlue.stroke,
-            borderCapStyle: 'butt',
-            fill: true
-          },
-          {
-            label: this.productGroup[3].name,
-            data: Object.values(this.productGroup[3].valuesPerYear),
-            backgroundColor: colors.green.fill,
-            pointBackgroundColor: colors.green.stroke,
-            borderColor: colors.green.stroke,
-            pointHighlightStroke: colors.green.stroke,
-            fill: true
-          },
-        ]
+        datasets: []
       },
       options: {
         legend: {
@@ -80,7 +40,7 @@ export class ChartComponent {
             stacked: true,
             scaleLabel: {
               display: true,
-              labelString: this.currentUnit + '/rok'
+              labelString: this.currentUnit + '/rok/os'
             }
           }],
         }, animation: {
@@ -88,7 +48,24 @@ export class ChartComponent {
         },
       }
     });
+    this.productGroup.forEach((product, index) => {
+      const someIndex: string = Color[index % Object.keys(colors).length];
+      this.chart.data.datasets.push({
+        label: product.name,
+        data: Object.values(product.valuesPerYear),
+        backgroundColor: colors[someIndex].fill,
+        pointBackgroundColor: colors[someIndex].stroke,
+        borderColor: colors[someIndex].stroke,
+        pointHighlightStroke: colors[someIndex].stroke,
+        fill: true
+      });
+    });
+    this.chart.update();
   }
+}
+
+enum Color {
+  green, lightBlue, darkBlue, purple
 }
 
 const colors = {
