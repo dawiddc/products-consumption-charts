@@ -32,14 +32,17 @@ export class ChartComponent {
     this.chart.update();
   }
 
-  private assignVariables(productGroup: Product[], availableYears: number[], currentUnit: string) {
+  private destroyCurrentChartAndAssignVariables(productGroup: Product[], availableYears: number[], currentUnit: string) {
+    if (this.chart) {
+      this.chart.destroy();
+    }
     this.productGroup = productGroup;
     this.years = availableYears;
     this.currentUnit = currentUnit;
   }
 
   prepareStackedAreaChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
-    this.assignVariables(productGroup, availableYears, currentUnit);
+    this.destroyCurrentChartAndAssignVariables(productGroup, availableYears, currentUnit);
     this.chart = new Chart('canvas', {
       type: 'line',
       options: {
@@ -66,7 +69,7 @@ export class ChartComponent {
   }
 
   prepareStackedPercentageAreaChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
-    this.assignVariables(productGroup, availableYears, currentUnit);
+    this.destroyCurrentChartAndAssignVariables(productGroup, availableYears, currentUnit);
     this.chart = new Chart('canvas', {
       type: 'line',
       options: {
@@ -100,10 +103,7 @@ export class ChartComponent {
   }
 
   prepareRadarChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
-    this.assignVariables(productGroup, availableYears, currentUnit);
-    this.productGroup = productGroup;
-    this.years = availableYears;
-    this.currentUnit = currentUnit;
+    this.destroyCurrentChartAndAssignVariables(productGroup, availableYears, currentUnit);
     this.chart = new Chart('canvas', {
       type: 'radar',
       options: {}
