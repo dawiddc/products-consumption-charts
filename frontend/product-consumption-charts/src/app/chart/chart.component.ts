@@ -117,7 +117,7 @@ export class ChartComponent {
 }
 
 enum Color {
-  green, honey, orange, brown, black, lightBlue, pink
+  green, honey, orange, brown, black, lightBlue, pink, yellow
 }
 
 const colors = {
@@ -148,5 +148,9 @@ const colors = {
   pink: {
     fill: '#fa92ff',
     stroke: '#fa92ff'
+  },
+  yellow: {
+    fill: '#eee92d',
+    stroke: '#eee92d'
   }
 };

@@ -5,9 +5,17 @@
   box-shadow: -10px 0px 25px #404040;
 }
 
+.title {
+  text-align: center;
+  color: #404040;
+  text-transform: uppercase;
+  font-family: "Impact", Impact, serif;
+}
+
 .content {
   width: 75%;
-  flex-grow: 1
+  flex-grow: 1;
+  margin: 10px 0;
 }
 
 .menu {
