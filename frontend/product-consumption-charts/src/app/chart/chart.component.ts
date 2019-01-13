@@ -114,6 +114,40 @@ export class ChartComponent {
     }
     this.chart.update();
   }
+
+  preparePieChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
+    this.destroyCurrentChartAndAssignVariables(productGroup, availableYears, currentUnit);
+    const averageValues: number[] = [];
+    const productLabels: string[] = [];
+    this.productGroup.forEach(product => {
+      averageValues.push(Object.values(product.valuesPerYear).reduce((a, b) => a + b));
+      productLabels.push(product.name);
+    });
+    this.chart = new Chart('canvas', {
+      type: 'doughnut',
+      data: {
+        labels: productLabels,
+        datasets: [
+          {
+            label: this.currentUnit + '/rok/os',
+            backgroundColor: ['#3e95cd', '#8e5ea2', '#3cba9f', '#e8c3b9', '#c45850', '#81b87d', '#ff6624', '#eee92d'],
+            data: averageValues
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Średni udział produktów przez cały badany okres'
+        },
+        legend: {
+          display: true
+        }
+      }, animation: {
+        duration: 750
+      }
+    });
+  }
 }
 
 enum Color {

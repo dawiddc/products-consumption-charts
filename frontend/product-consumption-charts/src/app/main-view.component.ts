@@ -13,7 +13,7 @@ export class MainViewComponent implements OnInit {
   private groups: Groups;
   private productGroup: Product[];
   private availableYears: number[] = [];
-  private chartTypes: string[] = ['Stacked', 'Stacked Percentages', 'Radar'];
+  private chartTypes: string[] = ['Stacked', 'Stacked Percentages', 'Radar', 'Average Doughnut'];
 
   currentUnit = 'kg';
   currentChartType = 'Stacked';
@@ -51,6 +51,8 @@ export class MainViewComponent implements OnInit {
       this.chart.prepareStackedPercentageAreaChart(this.productGroup, this.availableYears, this.currentUnit);
     } else if (chartType === 'Radar') {
       this.chart.prepareRadarChart(this.productGroup, this.availableYears, this.currentUnit);
+    } else if (chartType === 'Average Doughnut') {
+      this.chart.preparePieChart(this.productGroup, this.availableYears, this.currentUnit);
     }
   }
 
