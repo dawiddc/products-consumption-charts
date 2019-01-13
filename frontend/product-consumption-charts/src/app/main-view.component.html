@@ -1,4 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div class="main-container">
   <div style="text-align:center">
     <h1>
@@ -11,8 +10,16 @@
         <span>Wyświetl produkty o jednostce: </span><br>
         <select id="unit"
                 [(ngModel)]="currentUnit"
-                (ngModelChange)="unitOnChange($event)">
+                (ngModelChange)="unitOnChange($event.toString())">
           <option *ngFor="let unit of units" [value]="unit">{{unit}}</option>
+        </select>
+      </div>
+      <div class="dropdown-types">
+        <span>Typ wykresu: </span><br>
+        <select id="chartTypes"
+                [(ngModel)]="currentChartType"
+                (ngModelChange)="chartTypeOnChange($event.toString())">
+          <option *ngFor="let type of chartTypes" [value]="type">{{type}}</option>
         </select>
       </div>
     </div>
