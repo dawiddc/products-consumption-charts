@@ -68,40 +68,6 @@ export class ChartComponent {
     this.addChartData();
   }
 
-  prepareStackedPercentageAreaChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
-    this.destroyCurrentChartAndAssignVariables(productGroup, availableYears, currentUnit);
-    this.chart = new Chart('canvas', {
-      type: 'line',
-      options: {
-        scales: {
-          xAxes: [{
-            display: true,
-            scaleLabel: {
-              display: true,
-              labelString: 'lata'
-            }
-          }],
-          yAxes: [{
-            display: true,
-            stacked: true,
-            ticks: {
-              min: 0,
-              max: 100,
-              callback: function (value) {
-                return value + '%';
-              }
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'Percentage'
-            }
-          }],
-        }
-      }
-    });
-    this.addChartData();
-  }
-
   prepareRadarChart(productGroup: Product[], availableYears: number[], currentUnit: string) {
     this.destroyCurrentChartAndAssignVariables(productGroup, availableYears, currentUnit);
     this.chart = new Chart('canvas', {
@@ -120,7 +86,7 @@ export class ChartComponent {
     const averageValues: number[] = [];
     const productLabels: string[] = [];
     this.productGroup.forEach(product => {
-      averageValues.push(Object.values(product.valuesPerYear).reduce((a, b) => a + b));
+      averageValues.push(Object.values(product.valuesPerYear).reduce((a, b) => a + b) / availableYears.length);
       productLabels.push(product.name);
     });
     this.chart = new Chart('canvas', {
@@ -148,6 +114,42 @@ export class ChartComponent {
       }
     });
   }
+
+  updateYearRange(yearFrom: number, yearTo: number) {
+    const filteredYears: number[] = this.years.filter(y => y <= yearTo && y >= yearFrom).sort();
+    if (this.chart.config.type !== 'doughnut') {
+      this.chart.data.datasets = [];
+      this.productGroup.forEach((product, index) => {
+        const filteredValuesPerYear = [];
+        filteredYears.forEach(y => filteredValuesPerYear.push(product.valuesPerYear[y]));
+        const consecutiveColorIndex: string = Color[index % Object.keys(colors).length];
+        this.chart.data.datasets.push({
+          label: product.name,
+          data: filteredValuesPerYear,
+          backgroundColor: colors[consecutiveColorIndex].fill,
+          pointBackgroundColor: colors[consecutiveColorIndex].stroke,
+          borderColor: colors[consecutiveColorIndex].stroke,
+          pointHighlightStroke: colors[consecutiveColorIndex].stroke,
+          fill: true
+        });
+      });
+      this.chart.data.labels = filteredYears;
+    } else {
+      const averageValues: number[] = [];
+      this.productGroup.forEach(product => {
+        const filteredValuesPerYear = [];
+        filteredYears.forEach(y => filteredValuesPerYear.push(product.valuesPerYear[y]));
+        if (filteredYears.length > 0) {
+          averageValues.push(filteredValuesPerYear.reduce((a, b) => a + b) / filteredYears.length);
+        }
+      });
+      this.chart.data.datasets[0].data = averageValues;
+    }
+    this.chart.options.animation.duration = 750;
+    this.chart.options.legend.display = true;
+    this.chart.update();
+  }
+
 }
 
 enum Color {

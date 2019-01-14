@@ -13,10 +13,12 @@ export class MainViewComponent implements OnInit {
   private groups: Groups;
   private productGroup: Product[];
   private availableYears: number[] = [];
-  private chartTypes: string[] = ['Stacked', 'Stacked Percentages', 'Radar', 'Average Doughnut'];
+  private chartTypes: string[] = ['Stacked', 'Radar', 'Average Doughnut'];
 
-  currentUnit = 'kg';
-  currentChartType = 'Stacked';
+  private currentUnit = 'kg';
+  private currentChartType = 'Stacked';
+  private yearFrom = 2000;
+  private yearTo = 2017;
   units: string[];
 
   @ViewChild(ChartComponent) chart: ChartComponent;
@@ -47,8 +49,6 @@ export class MainViewComponent implements OnInit {
     this.prepareYearList();
     if (chartType === 'Stacked') {
       this.chart.prepareStackedAreaChart(this.productGroup, this.availableYears, this.currentUnit);
-    } else if (chartType === 'Stacked Percentages') {
-      this.chart.prepareStackedPercentageAreaChart(this.productGroup, this.availableYears, this.currentUnit);
     } else if (chartType === 'Radar') {
       this.chart.prepareRadarChart(this.productGroup, this.availableYears, this.currentUnit);
     } else if (chartType === 'Average Doughnut') {
@@ -64,6 +64,16 @@ export class MainViewComponent implements OnInit {
   private chartTypeOnChange(chartType: string) {
     this.currentChartType = chartType;
     this.loadChart(chartType);
+  }
+
+  private yearFromChange(yearFrom: number) {
+    this.yearFrom = yearFrom;
+    this.chart.updateYearRange(this.yearFrom, this.yearTo);
+  }
+
+  private yearToChange(yearTo: number) {
+    this.yearTo = yearTo;
+    this.chart.updateYearRange(this.yearFrom, this.yearTo);
   }
 }
 

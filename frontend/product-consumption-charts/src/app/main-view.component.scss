@@ -45,9 +45,26 @@ span {
   height: 100%;
 }
 
+.datePicker {
+  display: flex;
+  padding: 20px;
+}
+
+.year-from {
+flex: 0 0 65%;
+}
+
+.year-to {
+  flex: 1;
+}
+
 .dropdown-units, .dropdown-types {
   width: auto;
   padding: 20px;
+}
+
+.year-from, .year-to {
+  width: auto;
 }
 
 select#unit, select#chartTypes {

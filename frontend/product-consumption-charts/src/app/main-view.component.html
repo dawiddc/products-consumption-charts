@@ -1,7 +1,7 @@
 <div class="main-container">
-    <h1 class="title">
-      Statystyki spożycia artykułów konsumpcyjnych
-    </h1>
+  <h1 class="title">
+    Statystyki spożycia artykułów konsumpcyjnych
+  </h1>
   <div class="container">
     <div class="menu">
       <div class="dropdown-units">
@@ -19,6 +19,26 @@
                 (ngModelChange)="chartTypeOnChange($event.toString())">
           <option *ngFor="let type of chartTypes" [value]="type">{{type}}</option>
         </select>
+      </div>
+      <div class="datePicker">
+        <div class="year-from">
+          <span>Rok od: </span><br>
+          <input id="yearFrom"
+                 type="number"
+                 min="2000"
+                 max="2017"
+                 [(ngModel)]="yearFrom"
+                 (ngModelChange)="yearFromChange($event.toString())">
+        </div>
+        <div class="year-to">
+          <span>Rok do: </span><br>
+          <input id="yearTo"
+                 type="number"
+                 min="2000"
+                 max="2017"
+                 [(ngModel)]="yearTo"
+                 (ngModelChange)="yearToChange($event.toString())">
+        </div>
       </div>
     </div>
     <div class="content">
